@@ -8,6 +8,7 @@ import {PriceConverter} from "./PriceConverter.sol";
 contract FundMe {
     using PriceConverter for uint256;
     // state variables
+
     uint256 private constant MINIMUM_USD = 5 * 1 ether;
     address private immutable i_owner;
     address[] public s_funders;
@@ -27,10 +28,7 @@ contract FundMe {
     }
 
     function fund() public payable {
-        require(
-            msg.value.getConversionRate(s_dataFeed) >= MINIMUM_USD,
-            "Value must be greater that 5 usd!"
-        );
+        require(msg.value.getConversionRate(s_dataFeed) >= MINIMUM_USD, "Value must be greater that 5 usd!");
         s_funders.push(msg.sender);
         s_addressToAmountFunded[msg.sender] += msg.value;
     }
@@ -42,39 +40,27 @@ contract FundMe {
     function cheaperWithdraw() public FundeMe__allowOnlyOwner {
         // reset the s_addressToAmountFunded
         uint256 fundersLength = s_funders.length;
-        for (
-            uint256 funderIndex = 0;
-            funderIndex < fundersLength;
-            funderIndex++
-        ) {
+        for (uint256 funderIndex = 0; funderIndex < fundersLength; funderIndex++) {
             address funder = s_funders[funderIndex];
             s_addressToAmountFunded[funder] = 0;
         }
         // reset the array
         s_funders = new address[](0);
         // withdraw the funds
-        (bool success, ) = payable(msg.sender).call{
-            value: address(this).balance
-        }("");
+        (bool success,) = payable(msg.sender).call{value: address(this).balance}("");
         require(success, "Failed to withdraw eth!");
     }
 
     function withdraw() public FundeMe__allowOnlyOwner {
         // reset the s_addressToAmountFunded
-        for (
-            uint256 funderIndex = 0;
-            funderIndex < s_funders.length;
-            funderIndex++
-        ) {
+        for (uint256 funderIndex = 0; funderIndex < s_funders.length; funderIndex++) {
             address funder = s_funders[funderIndex];
             s_addressToAmountFunded[funder] = 0;
         }
         // reset the array
         s_funders = new address[](0);
         // withdraw the funds
-        (bool success, ) = payable(msg.sender).call{
-            value: address(this).balance
-        }("");
+        (bool success,) = payable(msg.sender).call{value: address(this).balance}("");
         require(success, "Failed to withdraw eth!");
     }
 
@@ -103,9 +89,7 @@ contract FundMe {
         return i_owner;
     }
 
-    function getAddressToAmountFunded(
-        address fundingAddress
-    ) external view returns (uint256) {
+    function getAddressToAmountFunded(address fundingAddress) external view returns (uint256) {
         return s_addressToAmountFunded[fundingAddress];
     }
 

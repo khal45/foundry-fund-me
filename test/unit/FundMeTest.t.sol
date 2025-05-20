@@ -20,11 +20,7 @@ contract FundMeTest is Test {
     }
 
     function testMinimumUSDIsFiveDollars() public view {
-        assertEq(
-            fundMeContract.getMinimumUSD(),
-            5 * 1 ether,
-            "minimum usd should be 5 dollars"
-        );
+        assertEq(fundMeContract.getMinimumUSD(), 5 * 1 ether, "minimum usd should be 5 dollars");
     }
 
     // // my own tests
@@ -75,11 +71,7 @@ contract FundMeTest is Test {
     function testOwnerIsMsgSender() public view {
         console.log(fundMeContract.getOwner());
         console.log(address(this));
-        assertEq(
-            fundMeContract.getOwner(),
-            msg.sender,
-            "Owner must be sender!"
-        );
+        assertEq(fundMeContract.getOwner(), msg.sender, "Owner must be sender!");
     }
 
     function testPriceFeedVersionIsAccurate() public view {
@@ -130,10 +122,7 @@ contract FundMeTest is Test {
         uint256 endingOwnerBalance = fundMeContract.getOwner().balance;
         uint256 endingFundMeBalance = address(fundMeContract).balance;
         assertEq(endingFundMeBalance, 0);
-        assertEq(
-            startingFundMeBalance + startingOwnerBalance,
-            endingOwnerBalance
-        );
+        assertEq(startingFundMeBalance + startingOwnerBalance, endingOwnerBalance);
     }
 
     function testWithdrawFromMultipleFunders() public funded {
@@ -160,10 +149,7 @@ contract FundMeTest is Test {
 
         // Assert
         assert(address(fundMeContract).balance == 0);
-        assert(
-            startingFundMeBalance + startingOwnerBalance ==
-                fundMeContract.getOwner().balance
-        );
+        assert(startingFundMeBalance + startingOwnerBalance == fundMeContract.getOwner().balance);
     }
 
     function testWithdrawFromMultipleFundersCheaper() public funded {
@@ -190,9 +176,6 @@ contract FundMeTest is Test {
 
         // Assert
         assert(address(fundMeContract).balance == 0);
-        assert(
-            startingFundMeBalance + startingOwnerBalance ==
-                fundMeContract.getOwner().balance
-        );
+        assert(startingFundMeBalance + startingOwnerBalance == fundMeContract.getOwner().balance);
     }
 }
