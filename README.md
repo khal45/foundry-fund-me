@@ -1,5 +1,3 @@
-<!-- Need to review this readme before pushing to github! -->
-
 # Foundry Fund Me
 
 ## Description
